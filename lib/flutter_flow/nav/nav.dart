@@ -79,13 +79,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NewProjectWidget() : LoginScreenWidget(),
+          appStateNotifier.loggedIn ? ProjectViewWidget() : LoginScreenWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) => appStateNotifier.loggedIn
-              ? NewProjectWidget()
+              ? ProjectViewWidget()
               : LoginScreenWidget(),
         ),
         FFRoute(

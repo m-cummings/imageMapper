@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -132,10 +133,18 @@ class _ProjectViewWidgetState extends State<ProjectViewWidget> {
                             width: double.infinity,
                             child: TextFormField(
                               controller: _model.searchBarController,
+                              onChanged: (_) => EasyDebounce.debounce(
+                                '_model.searchBarController',
+                                Duration(milliseconds: 2000),
+                                () => setState(() {}),
+                              ),
                               autofocus: true,
                               autofillHints: [AutofillHints.email],
+                              textCapitalization: TextCapitalization.words,
+                              textInputAction: TextInputAction.search,
                               obscureText: false,
                               decoration: InputDecoration(
+                                isDense: true,
                                 labelText: 'Search for existing projects...',
                                 labelStyle:
                                     FlutterFlowTheme.of(context).labelLarge,
@@ -181,6 +190,20 @@ class _ProjectViewWidgetState extends State<ProjectViewWidget> {
                                       .secondaryText,
                                   size: 24.0,
                                 ),
+                                suffixIcon: _model
+                                        .searchBarController!.text.isNotEmpty
+                                    ? InkWell(
+                                        onTap: () async {
+                                          _model.searchBarController?.clear();
+                                          setState(() {});
+                                        },
+                                        child: Icon(
+                                          Icons.clear,
+                                          color: Color(0xFF757575),
+                                          size: 22.0,
+                                        ),
+                                      )
+                                    : null,
                               ),
                               style: FlutterFlowTheme.of(context).bodyLarge,
                               validator: _model.searchBarControllerValidator
